@@ -39,7 +39,7 @@ function updateLengths() {
     var startX = expectedX;
     var startY = expectedY;
     for(var i=1; i<=4; i++){
-        widths[i-1] = (startX*i);
+        widths[i-1] = (startX*i + Math.floor(_toleranceX*(Math.random() - 0.5)));
         heights[i-1] = (expectedY - Math.floor(_toleranceY*Math.random()));
     }
 }
@@ -56,7 +56,6 @@ function createBanner(){
     path.setAttribute('stroke-width', '3');
     changeShape();
     svg.appendChild(path);
-    console.log(svg);
     bannerHolder.appendChild(svg);
 }
 
