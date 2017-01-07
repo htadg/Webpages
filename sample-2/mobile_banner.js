@@ -28,17 +28,15 @@ linearGrad.appendChild(stop2);
 defs.appendChild(linearGrad);
 svg.appendChild(defs);
 
-
-var count = 0;
-
 function updateLengths() {
-    var _toleranceX = 100;
-    var _toleranceY = 70;
+    var _toleranceX = 50;
+    var _toleranceY = 20;
     var expectedX = Math.floor(window.innerWidth / 5);
-    var expectedY = 150 || Math.floor(window.innerHeight / 3);
+    var expectedY = Math.floor(window.innerHeight / 5);
+    var steps = window.innerWidth;
     var startX = expectedX;
     var startY = expectedY;
-    for(var i=1; i<=4; i++){
+    for(var i=1; i<=steps; i++){
         widths[i-1] = (startX*i + Math.floor(_toleranceX*(Math.random() - 0.5)));
         heights[i-1] = (expectedY - Math.floor(_toleranceY*Math.random()));
     }
@@ -46,7 +44,11 @@ function updateLengths() {
 
 function changeShape(){
     updateLengths();
-    pathStr = 'M0 0 L0 '+ Math.floor(150 - Math.random()*100) +' L'+widths[0]+' '+heights[0]+' L'+widths[1]+' '+heights[1]+' L'+widths[2]+' '+heights[2]+' L'+widths[3]+' '+heights[3]+' L'+window.innerWidth+' '+ Math.floor(150 - Math.random()*100) +' L'+window.innerWidth+' 0 Z';
+    pathStr = 'M0 0 L0 '+ Math.floor(150 - Math.random()*100);
+    for(var i=0; i<widths.length; i++){
+        pathStr +=' L'+widths[i]+' '+heights[i];
+    }
+    pathStr +=' L'+window.innerWidth+' '+ Math.floor(150 - Math.random()*100) +' L'+window.innerWidth+' 0 Z';
     path.setAttribute('d', pathStr);
 }
 
