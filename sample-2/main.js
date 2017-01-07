@@ -72,3 +72,11 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phon
 
 loadCSS();
 loadJS();
+
+var onLoad = function(){
+    setTimeout(function(){
+        document.body.classList.toggle('loaded');
+    }, 3000);
+};
+
+docReady(onLoad);

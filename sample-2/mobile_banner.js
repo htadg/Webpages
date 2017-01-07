@@ -1,6 +1,7 @@
 var bannerHolder = document.querySelector('.banner');
 var widths = [];
 var heights = [];
+var counter = 0;
 var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 var svgNS = svg.namespaceURI;
 svg.setAttribute('width', Math.floor(window.innerWidth));
@@ -28,38 +29,35 @@ linearGrad.appendChild(stop2);
 defs.appendChild(linearGrad);
 svg.appendChild(defs);
 
-function updateLengths() {
-    var _toleranceX = 50;
-    var _toleranceY = 20;
-    var expectedX = Math.floor(window.innerWidth / 5);
-    var expectedY = Math.floor(window.innerHeight / 5);
-    var steps = window.innerWidth;
-    var startX = expectedX;
-    var startY = expectedY;
-    for(var i=1; i<=steps; i++){
-        widths[i-1] = (startX*i + Math.floor(_toleranceX*(Math.random() - 0.5)));
-        heights[i-1] = (expectedY - Math.floor(_toleranceY*Math.random()));
-    }
+function updateLengths(count) {
+  var totalX = window.innerWidth;
+  var amplitude = 10;
+  var meanY = window.innerHeight / 5;
+  var cycles = 6.25;
+  var limiter = totalX / cycles;
+  for(var i=0; i<=totalX; ++i)
+    heights[i] = Math.floor(Math.sin(i/limiter + count)*amplitude + meanY);
+  return count;
 }
 
 function changeShape(){
-    updateLengths();
-    pathStr = 'M0 0 L0 '+ Math.floor(150 - Math.random()*100);
-    for(var i=0; i<widths.length; i++){
-        pathStr +=' L'+widths[i]+' '+heights[i];
+    counter = updateLengths(++counter);
+    pathStr = 'M0 0';
+    for(var i=0; i<window.innerWidth; i++){
+        pathStr +=' L'+i+' '+heights[i];
     }
-    pathStr +=' L'+window.innerWidth+' '+ Math.floor(150 - Math.random()*100) +' L'+window.innerWidth+' 0 Z';
+    pathStr +=' L'+window.innerWidth+' 0 Z';
     path.setAttribute('d', pathStr);
 }
 
 function createBanner(){
     path.setAttribute('stroke','rgb(48, 3, 66)');
     path.setAttribute('fill','url(#grad1)');
-    path.setAttribute('stroke-width', '3');
+    path.setAttribute('stroke-width', '1');
     changeShape();
     svg.appendChild(path);
     bannerHolder.appendChild(svg);
 }
 
 createBanner();
-setInterval(changeShape, 3000);
+setInterval(changeShape, 500);
